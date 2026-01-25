@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <!-- ========== PROPERTIES ========== -->
+    <property name="APP_NAME" value="car-rental-backend"/>
+    <property name="LOG_PATH" value="logs"/>
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- Spring profile -->
+    <springProperty scope="context" name="SPRING_PROFILES_ACTIVE" source="spring.profiles.active"/>
+
+    <!-- ========== CONSOLE APPENDER ========== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========== FILE APPENDER (ROLLING) ========== -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Daily rolling -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- Keep 30 days of history -->
+            <maxHistory>30</maxHistory>
+
+            <!-- Total log size cap -->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========== DEV PROFILE LOGGING ========== -->
+    <springProfile name="dev">
+        <!-- More verbose for development -->
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+
+        <!-- Hibernate SQL (DEV ONLY) -->
+        <logger name="org.hibernate.SQL" level="DEBUG"/>
+        <logger name="org.hibernate.type.descriptor.sql" level="TRACE"/>
+    </springProfile>
+
+    <!-- ========== PROD PROFILE LOGGING ========== -->
+    <springProfile name="prod">
+        <!-- Cleaner logs for production -->
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+
+        <!-- Reduce Hibernate noise -->
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="org.springframework" level="INFO"/>
+    </springProfile>
+
+    <!-- ========== DEFAULT (NO PROFILE) ========== -->
+    <springProfile name="default">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- ========== PACKAGE-SPECIFIC LOGGING ========== -->
+    <!-- Your application logs -->
+    <logger name="com.carrental.carrental" level="DEBUG"/>
+
+    <!-- Security logs -->
+    <logger name="org.springframework.security" level="INFO"/>
+
+    <!-- Connection pool -->
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+
+</configuration>
