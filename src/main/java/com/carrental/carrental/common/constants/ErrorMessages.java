@@ -78,7 +78,7 @@ public class ErrorMessages {
     public static final String PAYMENT_AMOUNT_INVALID =
             "Invalid payment amount.";
     public static final String PAYMENT_ALREADY_COMPLETED =
-            "Payment has already been completed.";
+            "Payment has already been comple    ted.";
     public static final String PAYMENT_FAILED =
             "Payment processing failed.";
 
