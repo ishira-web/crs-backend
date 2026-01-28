@@ -1,10 +1,8 @@
 package com.carrental.carrental.common.exception;
 
-
-import com.carrental.common.constants.ErrorMessages;
-import com.carrental.common.response.ErrorResponse;
+import com.carrental.carrental.common.constants.ErrorMessages;
+import com.carrental.carrental.common.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
